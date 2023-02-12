@@ -11,7 +11,8 @@ class ProductGrid extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(productsProvider.select((value) => value.length));
+    // ref.watch(productsProvider.select((value) => value.length));
+    ref.watch(productsProvider);
     var products = showFavorites
         ? ref.read(productsProvider.notifier).favoriteProducts
         : ref.read(productsProvider.notifier).allProducts;

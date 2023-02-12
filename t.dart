@@ -1,4 +1,4 @@
-import 'lib/models/proudct.dart';
+import 'lib/models/product.dart';
 
 void main() {
   var p1 = Product(id: '1', title: 'title', description: 'description', price: 25.5, imageUrl: 'imageUrl');

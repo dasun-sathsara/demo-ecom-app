@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
+  return _OrderItem.fromJson(json);
+}
+
 /// @nodoc
 mixin _$OrderItem {
   String get id => throw _privateConstructorUsedError;
@@ -21,6 +25,7 @@ mixin _$OrderItem {
   double get totalPrice => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $OrderItemCopyWith<OrderItem> get copyWith =>
       throw _privateConstructorUsedError;
@@ -123,7 +128,7 @@ class __$$_OrderItemCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_OrderItem implements _OrderItem {
   const _$_OrderItem(
       {required this.id,
@@ -131,6 +136,9 @@ class _$_OrderItem implements _OrderItem {
       required this.totalPrice,
       required this.date})
       : _cartItems = cartItems;
+
+  factory _$_OrderItem.fromJson(Map<String, dynamic> json) =>
+      _$$_OrderItemFromJson(json);
 
   @override
   final String id;
@@ -165,6 +173,7 @@ class _$_OrderItem implements _OrderItem {
             (identical(other.date, date) || other.date == date));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id,
       const DeepCollectionEquality().hash(_cartItems), totalPrice, date);
@@ -174,6 +183,13 @@ class _$_OrderItem implements _OrderItem {
   @pragma('vm:prefer-inline')
   _$$_OrderItemCopyWith<_$_OrderItem> get copyWith =>
       __$$_OrderItemCopyWithImpl<_$_OrderItem>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_OrderItemToJson(
+      this,
+    );
+  }
 }
 
 abstract class _OrderItem implements OrderItem {
@@ -182,6 +198,9 @@ abstract class _OrderItem implements OrderItem {
       required final List<CartItem> cartItems,
       required final double totalPrice,
       required final DateTime date}) = _$_OrderItem;
+
+  factory _OrderItem.fromJson(Map<String, dynamic> json) =
+      _$_OrderItem.fromJson;
 
   @override
   String get id;

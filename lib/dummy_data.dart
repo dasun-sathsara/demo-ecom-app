@@ -1,4 +1,4 @@
-import 'models/proudct.dart';
+import 'models/product.dart';
 
 var dummyProducts = const [
   Product(

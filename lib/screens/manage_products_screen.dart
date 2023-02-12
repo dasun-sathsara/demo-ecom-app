@@ -40,11 +40,14 @@ class ManageProductsScreen extends ConsumerWidget {
           ],
         ),
         drawer: const AppDrawer(),
-        body: ListView.builder(
-            itemCount: products.length,
-            itemBuilder: (context, index) => ManageProductItem(
-                  product: products[index],
-                )),
+        body: RefreshIndicator(
+          onRefresh: () => ref.read(productsProvider.notifier).refreshProducts(),
+          child: ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) => ManageProductItem(
+                    product: products[index],
+                  )),
+        ),
       ),
     );
   }

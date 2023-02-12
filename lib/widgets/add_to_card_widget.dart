@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/proudct.dart';
+import '../models/product.dart';
 import '../providers.dart';
 import 'snack_bar_widget.dart';
 

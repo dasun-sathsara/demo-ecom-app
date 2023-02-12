@@ -12,17 +12,37 @@ enum Filters {
   all,
 }
 
-class ProductsScreen extends StatefulWidget {
+class ProductsScreen extends ConsumerStatefulWidget {
   static const routeName = '/';
 
   const ProductsScreen({super.key});
 
   @override
-  State<ProductsScreen> createState() => _ProductsScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsScreenState();
 }
 
-class _ProductsScreenState extends State<ProductsScreen> {
-  bool showFavorites = false;
+class _ProductsScreenState extends ConsumerState<ProductsScreen> {
+  bool _showFavorites = false;
+  var _isInit = false;
+  var _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!_isInit) {
+      ref.read(productsProvider.notifier).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+      _isInit = true;
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +70,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ),
             PopupMenuButton(
                 enableFeedback: true,
-                initialValue: showFavorites ? Filters.favorites : Filters.all,
+                initialValue: _showFavorites ? Filters.favorites : Filters.all,
                 onSelected: (value) {
                   setState(() {
                     if (value == Filters.favorites) {
-                      showFavorites = true;
+                      _showFavorites = true;
                     } else {
-                      showFavorites = false;
+                      _showFavorites = false;
                     }
                   });
                 },
@@ -69,7 +89,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     ]),
           ],
         ),
-        body: ProductGrid(showFavorites),
+        body: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : RefreshIndicator(
+                onRefresh: () => ref.read(productsProvider.notifier).refreshProducts(),
+                child: ProductGrid(_showFavorites)),
       ),
     );
   }

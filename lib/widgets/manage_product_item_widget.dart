@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/proudct.dart';
+import '../models/product.dart';
 import '../providers.dart';
 import '../screens/edit_product_screen.dart';
 
@@ -41,9 +41,26 @@ class ManageProductItem extends ConsumerWidget {
                                     child: const Text('Yes'))
                               ],
                             )).then(
-                      (value) {
+                      (value) async {
                         if (value == true) {
-                          ref.read(productsProvider.notifier).removeProduct(product.id);
+                          try {
+                            await ref.read(productsProvider.notifier).removeProduct(product.id);
+                          } catch (err) {
+                            await showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: const Text('An error occurred!'),
+                                content: const Text('Something went wrong while deleting the product.'),
+                                actions: [
+                                  TextButton(
+                                      child: const Text('Okay'),
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop();
+                                      })
+                                ],
+                              ),
+                            );
+                          }
                         }
                       },
                     );

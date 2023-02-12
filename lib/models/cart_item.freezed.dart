@@ -14,12 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+CartItem _$CartItemFromJson(Map<String, dynamic> json) {
+  return _CartItem.fromJson(json);
+}
+
 /// @nodoc
 mixin _$CartItem {
   String get id => throw _privateConstructorUsedError;
   Product get product => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CartItemCopyWith<CartItem> get copyWith =>
       throw _privateConstructorUsedError;
@@ -123,10 +128,13 @@ class __$$_CartItemCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_CartItem implements _CartItem {
   const _$_CartItem(
       {required this.id, required this.product, required this.quantity});
+
+  factory _$_CartItem.fromJson(Map<String, dynamic> json) =>
+      _$$_CartItemFromJson(json);
 
   @override
   final String id;
@@ -151,6 +159,7 @@ class _$_CartItem implements _CartItem {
                 other.quantity == quantity));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, product, quantity);
 
@@ -159,6 +168,13 @@ class _$_CartItem implements _CartItem {
   @pragma('vm:prefer-inline')
   _$$_CartItemCopyWith<_$_CartItem> get copyWith =>
       __$$_CartItemCopyWithImpl<_$_CartItem>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_CartItemToJson(
+      this,
+    );
+  }
 }
 
 abstract class _CartItem implements CartItem {
@@ -166,6 +182,8 @@ abstract class _CartItem implements CartItem {
       {required final String id,
       required final Product product,
       required final int quantity}) = _$_CartItem;
+
+  factory _CartItem.fromJson(Map<String, dynamic> json) = _$_CartItem.fromJson;
 
   @override
   String get id;
