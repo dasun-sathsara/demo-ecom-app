@@ -3,14 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../dummy_data.dart';
 import '../models/proudct.dart';
 
-Iterable<String> getId() sync* {
-  int id = 5;
-  while (true) {
-    yield 'p$id';
-    id++;
-  }
-}
-
 class ProductsNotifier extends Notifier<List<Product>> {
   Iterator<String> idIterator = getId().iterator;
 
