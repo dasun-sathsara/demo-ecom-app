@@ -46,7 +46,6 @@ class CartNotifier extends Notifier<List<CartItem>> {
 
   void removeQuantity(String id, int removeQuantity) {
     if (state.firstWhere((cartItem) => cartItem.id == id).quantity > removeQuantity) {
-      print(removeQuantity);
       state = state.map(
         (cartItem) {
           if (cartItem.id == id) {

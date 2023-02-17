@@ -137,6 +137,7 @@ class _EditProductScreenState extends ConsumerState<EditProductScreen> {
             title: _oldProduct!.title,
             description: _oldProduct!.description,
             price: _oldProduct!.price,
+            ownerId: _oldProduct!.ownerId,
             imageUrl: _oldProduct!.imageUrl);
 
         _imageUrlController.text = currentEditingProduct.imageUrl;

@@ -5,6 +5,7 @@ import '../providers.dart';
 import '../widgets/badge_icon_widget.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/products_grid_widget.dart';
+import 'auth_screen.dart';
 import 'cart_screen.dart';
 
 enum Filters {
@@ -13,7 +14,7 @@ enum Filters {
 }
 
 class ProductsScreen extends ConsumerStatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/products';
 
   const ProductsScreen({super.key});
 

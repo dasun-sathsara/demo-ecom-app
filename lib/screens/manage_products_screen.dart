@@ -14,7 +14,7 @@ class ManageProductsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(productsProvider);
-    var products = ref.read(productsProvider.notifier).allProducts;
+    var products = ref.read(productsProvider.notifier).ownProducts;
 
     return ScaffoldMessenger(
       child: Scaffold(

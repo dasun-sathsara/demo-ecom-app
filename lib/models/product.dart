@@ -10,6 +10,7 @@ class Product with _$Product {
       required String title,
       required String description,
       required num price,
+      String? ownerId,
       required String imageUrl,
       @Default(false) bool isFavorite}) = _Product;
 

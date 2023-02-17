@@ -1,16 +1,25 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers.dart';
 import '../widgets/cart_item_widget.dart';
 
-class CartScreen extends ConsumerWidget {
+class CartScreen extends ConsumerStatefulWidget {
   static const routeName = '/cart';
 
   const CartScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends ConsumerState<CartScreen> {
+  var _isOrderProcessing = false;
+
+  @override
+  Widget build(BuildContext context) {
     ref.watch(cartProvider);
 
     var cartItems = ref.read(cartProvider.notifier).cartItems;
@@ -43,16 +52,35 @@ class CartScreen extends ConsumerWidget {
                       width: 10,
                     ),
                     TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (ref.read(cartProvider).isNotEmpty) {
-                            print(ref.read(ordersProvider));
-                            ref
+                            setState(() {
+                              _isOrderProcessing = true;
+                            });
+
+                            await ref
                                 .read(ordersProvider.notifier)
                                 .addOrder(cartItems, ref.read(cartProvider.notifier).totalPrice);
                             ref.read(cartProvider.notifier).clearCart();
+                            await Future.delayed(const Duration(seconds: 1));
+
+                            setState(() {
+                              _isOrderProcessing = false;
+                            });
                           }
                         },
-                        child: const Text('ORDER NOW'))
+                        child: Container(
+                            width: 90,
+                            alignment: Alignment.center,
+                            child: _isOrderProcessing
+                                ? const SizedBox(
+                                    height: 15,
+                                    width: 15,
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    )))
+                                : const Text('ORDER NOW')))
                   ],
                 ),
               )),

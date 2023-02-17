@@ -10,8 +10,9 @@ class OrderItem with _$OrderItem {
   const factory OrderItem({
     required String id,
     required List<CartItem> cartItems,
-    required double totalPrice,
+    required num totalPrice,
     required DateTime date,
+    String? ownerId,
   }) = _OrderItem;
 
   factory OrderItem.fromJson(Map<String, Object?> json) => _$OrderItemFromJson(json);

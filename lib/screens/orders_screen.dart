@@ -14,6 +14,17 @@ class OrdersScreen extends ConsumerStatefulWidget {
 }
 
 class _OrdersScreenState extends ConsumerState<OrdersScreen> {
+  var _isInit = false;
+
+  @override
+  void didChangeDependencies() {
+    if (!_isInit) {
+      ref.read(ordersProvider.notifier).fetchAndSetOrders();
+      _isInit = true;
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.watch(ordersProvider);
@@ -22,8 +33,13 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       child: Scaffold(
         appBar: AppBar(title: const Text('Orders')),
         drawer: const AppDrawer(),
-        body: ListView(
-            children: ref.read(ordersProvider.notifier).allOrders.map((orderItem) => OrderItem(orderItem)).toList()),
+        body: RefreshIndicator(
+          onRefresh: () {
+            return ref.read(ordersProvider.notifier).fetchAndSetOrders();
+          },
+          child: ListView(
+              children: ref.read(ordersProvider.notifier).allOrders.map((orderItem) => OrderItem(orderItem)).toList()),
+        ),
       ),
     );
   }

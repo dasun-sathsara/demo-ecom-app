@@ -24,6 +24,7 @@ mixin _$Product {
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   num get price => throw _privateConstructorUsedError;
+  String? get ownerId => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
 
@@ -42,6 +43,7 @@ abstract class $ProductCopyWith<$Res> {
       String title,
       String description,
       num price,
+      String? ownerId,
       String imageUrl,
       bool isFavorite});
 }
@@ -63,6 +65,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? title = null,
     Object? description = null,
     Object? price = null,
+    Object? ownerId = freezed,
     Object? imageUrl = null,
     Object? isFavorite = null,
   }) {
@@ -83,6 +86,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as num,
+      ownerId: freezed == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as String?,
       imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -107,6 +114,7 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String title,
       String description,
       num price,
+      String? ownerId,
       String imageUrl,
       bool isFavorite});
 }
@@ -125,6 +133,7 @@ class __$$_ProductCopyWithImpl<$Res>
     Object? title = null,
     Object? description = null,
     Object? price = null,
+    Object? ownerId = freezed,
     Object? imageUrl = null,
     Object? isFavorite = null,
   }) {
@@ -145,6 +154,10 @@ class __$$_ProductCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as num,
+      ownerId: freezed == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as String?,
       imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -165,6 +178,7 @@ class _$_Product implements _Product {
       required this.title,
       required this.description,
       required this.price,
+      this.ownerId,
       required this.imageUrl,
       this.isFavorite = false});
 
@@ -180,6 +194,8 @@ class _$_Product implements _Product {
   @override
   final num price;
   @override
+  final String? ownerId;
+  @override
   final String imageUrl;
   @override
   @JsonKey()
@@ -187,7 +203,7 @@ class _$_Product implements _Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, title: $title, description: $description, price: $price, imageUrl: $imageUrl, isFavorite: $isFavorite)';
+    return 'Product(id: $id, title: $title, description: $description, price: $price, ownerId: $ownerId, imageUrl: $imageUrl, isFavorite: $isFavorite)';
   }
 
   @override
@@ -200,6 +216,7 @@ class _$_Product implements _Product {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.isFavorite, isFavorite) ||
@@ -208,8 +225,8 @@ class _$_Product implements _Product {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, title, description, price, imageUrl, isFavorite);
+  int get hashCode => Object.hash(runtimeType, id, title, description, price,
+      ownerId, imageUrl, isFavorite);
 
   @JsonKey(ignore: true)
   @override
@@ -231,6 +248,7 @@ abstract class _Product implements Product {
       required final String title,
       required final String description,
       required final num price,
+      final String? ownerId,
       required final String imageUrl,
       final bool isFavorite}) = _$_Product;
 
@@ -244,6 +262,8 @@ abstract class _Product implements Product {
   String get description;
   @override
   num get price;
+  @override
+  String? get ownerId;
   @override
   String get imageUrl;
   @override

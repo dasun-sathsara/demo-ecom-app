@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shopapp/providers.dart';
 
+import '../screens/auth_screen.dart';
 import '../screens/manage_products_screen.dart';
 import '../screens/orders_screen.dart';
 import '../screens/products_screen.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(authProvider, (previous, next) {
+      if (!next.isLoggedIn) {
+        Navigator.of(context)
+            .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const AuthScreen()), (route) => true);
+      }
+    });
+
     return Drawer(
       child: Column(
         children: [
@@ -47,6 +57,17 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Manage Products', style: TextStyle(fontSize: 16)),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(ManageProductsScreen.routeName);
+            },
+          ),
+          const Divider(thickness: 0.1, height: 5),
+          ListTile(
+            leading: const Icon(
+              Icons.exit_to_app,
+              size: 26,
+            ),
+            title: const Text('Log Out', style: TextStyle(fontSize: 16)),
+            onTap: () {
+              ref.read(authProvider.notifier).logout();
             },
           ),
           const Divider(thickness: 0.1, height: 5),

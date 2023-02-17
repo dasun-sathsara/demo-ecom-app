@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/product.dart';
+import '../providers.dart';
 
 class ProductsNotifier extends Notifier<List<Product>> {
   @override
@@ -12,6 +14,10 @@ class ProductsNotifier extends Notifier<List<Product>> {
   }
 
   List<Product> get allProducts => state;
+  List<Product> get ownProducts {
+    var userId = ref.read(authProvider.notifier).userId;
+    return state.where((product) => product.ownerId == userId).toList();
+  }
 
   List<Product> get favoriteProducts => state.where((product) {
         return product.isFavorite;
@@ -22,25 +28,40 @@ class ProductsNotifier extends Notifier<List<Product>> {
   }
 
   Future<void> fetchAndSetProducts() async {
-    final url = Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products.json');
+    final token = ref.read(authProvider.notifier).token;
+    final userId = ref.read(authProvider.notifier).userId;
+
+    final url =
+        Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products.json', {'auth': token});
+    final favoritesUrl = Uri.https(
+        'shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'favorites/$userId.json', {'auth': token});
 
     try {
-      final response = await http.get(url);
-      final responseBody = json.decode(response.body);
-      if (responseBody.isEmpty || responseBody == null) {
+      final productsResponse = await http.get(url);
+      final favoritesResponse = await http.get(favoritesUrl);
+      final favoritesResponseBody = json.decode(favoritesResponse.body);
+      final proudctsResponseBody = json.decode(productsResponse.body);
+      print(favoritesResponseBody);
+
+      if (proudctsResponseBody.isEmpty || proudctsResponseBody == null) {
         return;
       }
 
       final products = <Product>[];
 
-      (responseBody as Map<String, dynamic>).forEach((key, value) {
+      (proudctsResponseBody as Map<String, dynamic>).forEach((key, value) {
         products.add(Product(
             id: key,
             title: value['title'],
+            ownerId: value['ownerId'],
             description: value['description'],
             price: value['price'],
             imageUrl: value['imageUrl'],
-            isFavorite: (value as Map<String, dynamic>).containsKey('isFavorite') ? value['isFavorite'] : false));
+            isFavorite: favoritesResponseBody == null
+                ? false
+                : (favoritesResponseBody as Map<String, dynamic>).containsKey(key)
+                    ? (favoritesResponseBody)[key]!
+                    : false));
       });
 
       state = products;
@@ -57,18 +78,24 @@ class ProductsNotifier extends Notifier<List<Product>> {
     required String description,
     required String imageUrl,
   }) async {
-    final url = Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products.json');
+    var token = ref.read(authProvider.notifier).token;
+    var userId = ref.read(authProvider.notifier).userId;
+
+    final url =
+        Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products.json', {'auth': token});
 
     try {
       final response = await http.post(
         url,
-        body: json.encode({'title': title, 'price': price, 'description': description, 'imageUrl': imageUrl}),
+        body: json.encode(
+            {'title': title, 'price': price, 'description': description, 'imageUrl': imageUrl, 'ownerId': userId}),
       );
       state = [
         ...state,
         Product(
           id: json.decode(response.body)['name'],
           title: title,
+          ownerId: userId,
           description: description,
           price: price,
           imageUrl: imageUrl,
@@ -83,7 +110,9 @@ class ProductsNotifier extends Notifier<List<Product>> {
 
   Future<void> removeProduct(String id) async {
     try {
-      final url = Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products/$id.json');
+      final token = ref.read(authProvider.notifier).token;
+      final url = Uri.https(
+          'shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products/$id.json', {'auth': token});
 
       var response = await http.delete(url);
       if (response.statusCode > 400) {
@@ -104,11 +133,10 @@ class ProductsNotifier extends Notifier<List<Product>> {
   }
 
   Future<void> updateProduct({required Product updatedProduct}) async {
+    final token = ref.read(authProvider.notifier).token;
     try {
-      final url = Uri.https(
-        'shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app',
-        'products/${updatedProduct.id}.json',
-      );
+      final url = Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app',
+          'products/${updatedProduct.id}.json', {'auth': token});
 
       var response = await http.patch(
         url,
@@ -121,6 +149,7 @@ class ProductsNotifier extends Notifier<List<Product>> {
           },
         ),
       );
+      print(json.decode(response.body));
 
       if (response.statusCode > 400) {
         throw const HttpException('Bad Status Code');
@@ -145,6 +174,9 @@ class ProductsNotifier extends Notifier<List<Product>> {
   void toggleFavorite(String productID) async {
     var currentStatus = state.firstWhere((product) => product.id == productID).isFavorite;
 
+    var token = ref.read(authProvider.notifier).token;
+    var userId = ref.read(authProvider.notifier).userId;
+
     void updateState(bool value) {
       state = state.map(
         (product) {
@@ -158,12 +190,13 @@ class ProductsNotifier extends Notifier<List<Product>> {
     }
 
     try {
-      final url = Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products/$productID.json');
+      final url = Uri.https(
+          'shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'favorites/$userId.json', {'auth': token});
       updateState(!currentStatus);
 
       var response = await http.patch(
         url,
-        body: json.encode({'isFavorite': !currentStatus}),
+        body: json.encode({productID: !currentStatus}),
       );
 
       if (response.statusCode > 400) {

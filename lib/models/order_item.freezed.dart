@@ -22,8 +22,9 @@ OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
 mixin _$OrderItem {
   String get id => throw _privateConstructorUsedError;
   List<CartItem> get cartItems => throw _privateConstructorUsedError;
-  double get totalPrice => throw _privateConstructorUsedError;
+  num get totalPrice => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
+  String? get ownerId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +38,11 @@ abstract class $OrderItemCopyWith<$Res> {
       _$OrderItemCopyWithImpl<$Res, OrderItem>;
   @useResult
   $Res call(
-      {String id, List<CartItem> cartItems, double totalPrice, DateTime date});
+      {String id,
+      List<CartItem> cartItems,
+      num totalPrice,
+      DateTime date,
+      String? ownerId});
 }
 
 /// @nodoc
@@ -57,6 +62,7 @@ class _$OrderItemCopyWithImpl<$Res, $Val extends OrderItem>
     Object? cartItems = null,
     Object? totalPrice = null,
     Object? date = null,
+    Object? ownerId = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -70,11 +76,15 @@ class _$OrderItemCopyWithImpl<$Res, $Val extends OrderItem>
       totalPrice: null == totalPrice
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
-              as double,
+              as num,
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      ownerId: freezed == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -87,7 +97,11 @@ abstract class _$$_OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id, List<CartItem> cartItems, double totalPrice, DateTime date});
+      {String id,
+      List<CartItem> cartItems,
+      num totalPrice,
+      DateTime date,
+      String? ownerId});
 }
 
 /// @nodoc
@@ -105,6 +119,7 @@ class __$$_OrderItemCopyWithImpl<$Res>
     Object? cartItems = null,
     Object? totalPrice = null,
     Object? date = null,
+    Object? ownerId = freezed,
   }) {
     return _then(_$_OrderItem(
       id: null == id
@@ -118,11 +133,15 @@ class __$$_OrderItemCopyWithImpl<$Res>
       totalPrice: null == totalPrice
           ? _value.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
-              as double,
+              as num,
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      ownerId: freezed == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -134,7 +153,8 @@ class _$_OrderItem implements _OrderItem {
       {required this.id,
       required final List<CartItem> cartItems,
       required this.totalPrice,
-      required this.date})
+      required this.date,
+      this.ownerId})
       : _cartItems = cartItems;
 
   factory _$_OrderItem.fromJson(Map<String, dynamic> json) =>
@@ -151,13 +171,15 @@ class _$_OrderItem implements _OrderItem {
   }
 
   @override
-  final double totalPrice;
+  final num totalPrice;
   @override
   final DateTime date;
+  @override
+  final String? ownerId;
 
   @override
   String toString() {
-    return 'OrderItem(id: $id, cartItems: $cartItems, totalPrice: $totalPrice, date: $date)';
+    return 'OrderItem(id: $id, cartItems: $cartItems, totalPrice: $totalPrice, date: $date, ownerId: $ownerId)';
   }
 
   @override
@@ -170,13 +192,19 @@ class _$_OrderItem implements _OrderItem {
                 .equals(other._cartItems, _cartItems) &&
             (identical(other.totalPrice, totalPrice) ||
                 other.totalPrice == totalPrice) &&
-            (identical(other.date, date) || other.date == date));
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id,
-      const DeepCollectionEquality().hash(_cartItems), totalPrice, date);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      const DeepCollectionEquality().hash(_cartItems),
+      totalPrice,
+      date,
+      ownerId);
 
   @JsonKey(ignore: true)
   @override
@@ -196,8 +224,9 @@ abstract class _OrderItem implements OrderItem {
   const factory _OrderItem(
       {required final String id,
       required final List<CartItem> cartItems,
-      required final double totalPrice,
-      required final DateTime date}) = _$_OrderItem;
+      required final num totalPrice,
+      required final DateTime date,
+      final String? ownerId}) = _$_OrderItem;
 
   factory _OrderItem.fromJson(Map<String, dynamic> json) =
       _$_OrderItem.fromJson;
@@ -207,9 +236,11 @@ abstract class _OrderItem implements OrderItem {
   @override
   List<CartItem> get cartItems;
   @override
-  double get totalPrice;
+  num get totalPrice;
   @override
   DateTime get date;
+  @override
+  String? get ownerId;
   @override
   @JsonKey(ignore: true)
   _$$_OrderItemCopyWith<_$_OrderItem> get copyWith =>

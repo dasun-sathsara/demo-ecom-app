@@ -11,8 +11,9 @@ _$_OrderItem _$$_OrderItemFromJson(Map<String, dynamic> json) => _$_OrderItem(
       cartItems: (json['cartItems'] as List<dynamic>)
           .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalPrice: (json['totalPrice'] as num).toDouble(),
+      totalPrice: json['totalPrice'] as num,
       date: DateTime.parse(json['date'] as String),
+      ownerId: json['ownerId'] as String?,
     );
 
 Map<String, dynamic> _$$_OrderItemToJson(_$_OrderItem instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$$_OrderItemToJson(_$_OrderItem instance) =>
       'cartItems': instance.cartItems,
       'totalPrice': instance.totalPrice,
       'date': instance.date.toIso8601String(),
+      'ownerId': instance.ownerId,
     };
