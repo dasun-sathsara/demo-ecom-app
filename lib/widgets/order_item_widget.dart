@@ -57,7 +57,7 @@ class _OrderItemState extends ConsumerState<OrderItem> {
                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                             Text(widget.orderItem.cartItems[index].product.title),
                             Text(
-                                '${widget.orderItem.cartItems[index].quantity} x ${widget.orderItem.cartItems[index].product.price}')
+                                '${widget.orderItem.cartItems[index].quantity} x \$${widget.orderItem.cartItems[index].product.price.toStringAsFixed(2)}')
                           ]),
                           const Divider(
                             thickness: 0.1,

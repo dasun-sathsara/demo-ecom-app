@@ -44,9 +44,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                     const Spacer(),
                     Chip(
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      label: Text('\$${ref.read(cartProvider.notifier).totalPrice.toStringAsFixed(2)}',
+                      label: Text(
+                          '\$${ref.read(cartProvider.notifier).totalPrice.toStringAsFixed(2)}',
                           style: const TextStyle(color: Colors.white, fontSize: 17)),
-                      side: const BorderSide(width: 0),
+                      side: const BorderSide(width: 0, style: BorderStyle.none),
                     ),
                     const SizedBox(
                       width: 10,
@@ -58,9 +59,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               _isOrderProcessing = true;
                             });
 
-                            await ref
-                                .read(ordersProvider.notifier)
-                                .addOrder(cartItems, ref.read(cartProvider.notifier).totalPrice);
+                            await ref.read(ordersProvider.notifier).addOrder(
+                                cartItems, ref.read(cartProvider.notifier).totalPrice);
                             ref.read(cartProvider.notifier).clearCart();
                             await Future.delayed(const Duration(seconds: 1));
 
@@ -89,7 +89,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: cartItems.length, itemBuilder: (context, index) => CartItem(cartItem: cartItems[index])),
+                itemCount: cartItems.length,
+                itemBuilder: (context, index) => CartItem(cartItem: cartItems[index])),
           )
         ]),
       ),

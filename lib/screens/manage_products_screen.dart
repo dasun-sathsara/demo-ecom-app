@@ -41,7 +41,10 @@ class ManageProductsScreen extends ConsumerWidget {
         ),
         drawer: const AppDrawer(),
         body: RefreshIndicator(
-          onRefresh: () => ref.read(productsProvider.notifier).refreshProducts(),
+          // onRefresh: () => ref.read(productsProvider.notifier).refreshProducts(),
+          onRefresh: () async {
+            print(products);
+          },
           child: ListView.builder(
               itemCount: products.length,
               itemBuilder: (context, index) => ManageProductItem(

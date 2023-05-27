@@ -31,17 +31,18 @@ class ProductsNotifier extends Notifier<List<Product>> {
     final token = ref.read(authProvider.notifier).token;
     final userId = ref.read(authProvider.notifier).userId;
 
-    final url =
-        Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products.json', {'auth': token});
+    final url = Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app',
+        'products.json', {'auth': token});
     final favoritesUrl = Uri.https(
-        'shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'favorites/$userId.json', {'auth': token});
+        'shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app',
+        'favorites/$userId.json',
+        {'auth': token});
 
     try {
       final productsResponse = await http.get(url);
       final favoritesResponse = await http.get(favoritesUrl);
       final favoritesResponseBody = json.decode(favoritesResponse.body);
       final proudctsResponseBody = json.decode(productsResponse.body);
-      print(favoritesResponseBody);
 
       if (proudctsResponseBody.isEmpty || proudctsResponseBody == null) {
         return;
@@ -81,14 +82,19 @@ class ProductsNotifier extends Notifier<List<Product>> {
     var token = ref.read(authProvider.notifier).token;
     var userId = ref.read(authProvider.notifier).userId;
 
-    final url =
-        Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products.json', {'auth': token});
+    final url = Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app',
+        'products.json', {'auth': token});
 
     try {
       final response = await http.post(
         url,
-        body: json.encode(
-            {'title': title, 'price': price, 'description': description, 'imageUrl': imageUrl, 'ownerId': userId}),
+        body: json.encode({
+          'title': title,
+          'price': price,
+          'description': description,
+          'imageUrl': imageUrl,
+          'ownerId': userId
+        }),
       );
       state = [
         ...state,
@@ -111,8 +117,8 @@ class ProductsNotifier extends Notifier<List<Product>> {
   Future<void> removeProduct(String id) async {
     try {
       final token = ref.read(authProvider.notifier).token;
-      final url = Uri.https(
-          'shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'products/$id.json', {'auth': token});
+      final url = Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app',
+          'products/$id.json', {'auth': token});
 
       var response = await http.delete(url);
       if (response.statusCode > 400) {
@@ -190,8 +196,8 @@ class ProductsNotifier extends Notifier<List<Product>> {
     }
 
     try {
-      final url = Uri.https(
-          'shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app', 'favorites/$userId.json', {'auth': token});
+      final url = Uri.https('shoapp-dx-default-rtdb.asia-southeast1.firebasedatabase.app',
+          'favorites/$userId.json', {'auth': token});
       updateState(!currentStatus);
 
       var response = await http.patch(
