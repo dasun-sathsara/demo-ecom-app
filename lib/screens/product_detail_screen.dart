@@ -61,7 +61,10 @@ class ProductDetailScreen extends ConsumerWidget {
           ),
           body: SingleChildScrollView(
             child: Column(children: [
-              SizedBox(height: 300, width: double.infinity, child: Image.network(product.imageUrl, fit: BoxFit.cover)),
+              Hero(
+                  tag: product.id,
+                  child: SizedBox(
+                      height: 300, width: double.infinity, child: Image.network(product.imageUrl, fit: BoxFit.cover))),
               AddToCard(product),
               const SizedBox(
                 height: 20,

@@ -28,6 +28,18 @@ dev_dependencies:
         sdk: flutter
     freezed: ^2.3.2
     json_serializable: ^6.6.1
+    flutter_launcher_icons: '^0.13.1'
 
 flutter:
     uses-material-design: true
+
+    assets:
+        - assets/images/product-placeholder.png
+        - assets/images/default-product-image.png
+        - assets/images/logo.png
+
+flutter_launcher_icons:
+    android: true
+    ios: true
+    image_path: 'assets/icon/shopping-cart.png'
+    min_sdk_android: 21

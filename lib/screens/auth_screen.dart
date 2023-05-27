@@ -70,9 +70,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen> with SingleTickerProvid
 
       try {
         if (_authMode == AuthMode.signIn) {
-          await ref.read(authProvider.notifier).login(email: _formData['email']!, password: _formData['password']!);
+          await ref
+              .read(authProvider.notifier)
+              .login(email: _formData['email']!, password: _formData['password']!);
         } else {
-          await ref.read(authProvider.notifier).signup(email: _formData['email']!, password: _formData['password']!);
+          await ref
+              .read(authProvider.notifier)
+              .signup(email: _formData['email']!, password: _formData['password']!);
         }
       } on HttpException catch (error) {
         var errorMessage = 'Authentication failed.';
@@ -104,8 +108,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> with SingleTickerProvid
   Widget build(BuildContext context) {
     ref.listen(authProvider, (previous, next) {
       if (next.isLoggedIn) {
-        Navigator.of(context)
-            .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const ProductsScreen()), (route) => true);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const ProductsScreen()), (route) => true);
       }
     });
     return Scaffold(
@@ -118,9 +122,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> with SingleTickerProvid
                 //Logo
 
                 SizedBox(
-                  height: 150,
+                  height: 180,
                   child: FittedBox(
-                    child: Image.network('https://logos-world.net/wp-content/uploads/2020/11/The-Body-Shop-Logo.png'),
+                    child: Image.asset('assets/images/logo.png'),
                   ),
                 ),
                 const SizedBox(
@@ -140,7 +144,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> with SingleTickerProvid
                           prefixIcon: const Icon(Icons.email),
                           controller: null,
                           validator: (value) {
-                            var emailRegex = RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+                            var emailRegex =
+                                RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
 
                             if (value == null || value.isEmpty) {
                               return 'Please enter an email address';
@@ -210,7 +215,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> with SingleTickerProvid
                           shadowColor: Colors.pink,
                           foregroundColor: Colors.white,
                           minimumSize: const Size.fromHeight(45),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          shape:
+                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                           backgroundColor: Theme.of(context).colorScheme.primary,
                           enableFeedback: true,
                         ),
@@ -235,16 +241,20 @@ class _AuthScreenState extends ConsumerState<AuthScreen> with SingleTickerProvid
                         ),
                       ),
 
-                      Container(padding: const EdgeInsets.only(top: 12), child: const Text('OR')),
+                      Container(
+                          padding: const EdgeInsets.only(top: 12), child: const Text('OR')),
 
                       TextButton(
                         onPressed: () {
                           setState(() {
-                            _authMode = _authMode == AuthMode.signUp ? AuthMode.signIn : AuthMode.signUp;
+                            _authMode = _authMode == AuthMode.signUp
+                                ? AuthMode.signIn
+                                : AuthMode.signUp;
                           });
                         },
                         style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                            shape:
+                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                             backgroundColor: Colors.transparent,
                             foregroundColor: Colors.transparent,
                             minimumSize: const Size.fromHeight(45),
@@ -253,8 +263,11 @@ class _AuthScreenState extends ConsumerState<AuthScreen> with SingleTickerProvid
                           width: double.infinity,
                           child: Center(
                             child: Text(
-                              _authMode == AuthMode.signIn ? 'Sign Up Instead' : 'Log In Instead',
-                              style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.primary),
+                              _authMode == AuthMode.signIn
+                                  ? 'Sign Up Instead'
+                                  : 'Log In Instead',
+                              style: TextStyle(
+                                  fontSize: 15, color: Theme.of(context).colorScheme.primary),
                             ),
                           ),
                         ),

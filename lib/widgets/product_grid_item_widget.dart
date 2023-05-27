@@ -15,7 +15,8 @@ class ProductGridItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(productsProvider.select((value) => value.firstWhere((element) => element.id == productID).isFavorite));
+    ref.watch(productsProvider
+        .select((value) => value.firstWhere((element) => element.id == productID).isFavorite));
     var product = ref.read(productsProvider.notifier).getProduct(productID);
 
     return ClipRRect(
@@ -41,7 +42,9 @@ class ProductGridItem extends ConsumerWidget {
                         ref.read(productsProvider.notifier).toggleFavorite(productID);
                       },
                       color: Theme.of(context).colorScheme.secondary,
-                      icon: product.isFavorite ? const Icon(Icons.favorite_rounded) : const Icon(Icons.favorite_border),
+                      icon: product.isFavorite
+                          ? const Icon(Icons.favorite_rounded)
+                          : const Icon(Icons.favorite_border),
                     ),
                     trailing: IconButton(
                         iconSize: 30,
@@ -56,7 +59,15 @@ class ProductGridItem extends ConsumerWidget {
               ),
               child: Stack(
                 children: [
-                  Image.network(product.imageUrl, width: double.infinity, fit: BoxFit.cover),
+                  Hero(
+                    tag: product.id,
+                    child: FadeInImage(
+                      placeholder: const AssetImage('assets/images/default-product-image.png'),
+                      image: NetworkImage(product.imageUrl),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                   Positioned(
                       left: -25,
                       top: 10,
@@ -69,7 +80,8 @@ class ProductGridItem extends ConsumerWidget {
                             child: Center(
                               child: Text(
                                 '\$${product.price}',
-                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    color: Colors.black, fontWeight: FontWeight.bold),
                               ),
                             )),
                       )),
@@ -78,7 +90,8 @@ class ProductGridItem extends ConsumerWidget {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).pushNamed(ProductDetailScreen.routeName, arguments: productID);
+                              Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
+                                  arguments: productID);
                             },
                           )))
                 ],
